@@ -24,6 +24,51 @@ for r in (health, context, expand, choice, speak, listen, wearable, state, trace
     app.include_router(r.router)
 
 
+# --- English everywhere: internal values are Spanish, the API speaks English ---
+TONE_EN = {"neutro": "neutral", "tranquilo": "calm", "contento": "happy", "cansado": "tired",
+           "molesto": "annoyed", "urgente": "urgent"}
+TONE_ES = {v: k for k, v in TONE_EN.items()}
+ACT_EN = {"alta": "high", "baja": "low", "media": "medium", "activación": "activation",
+          "reposo": "rest", "estres": "stress", "diversion": "amusement"}
+_TONE_KEYS = {"suggested_tone", "tone"}
+
+
+def _to_en(o):
+    if isinstance(o, dict):
+        out = {}
+        for k, v in o.items():
+            if k in _TONE_KEYS and isinstance(v, str):
+                v = TONE_EN.get(v, v)
+            elif k == "activation" and isinstance(v, str):
+                v = ACT_EN.get(v, v)
+            elif isinstance(v, str) and k == "result_summary":
+                for a, b in {**TONE_EN, **ACT_EN}.items():
+                    v = v.replace(f'"{a}"', f'"{b}"')
+            else:
+                v = _to_en(v)
+            out[k] = v
+        return out
+    if isinstance(o, list):
+        return [_to_en(x) for x in o]
+    return o
+
+
+@app.middleware("http")
+async def english(request, call_next):
+    import json as _j
+    from fastapi.responses import Response as _R
+    response = await call_next(request)
+    if "application/json" not in (response.headers.get("content-type") or ""):
+        return response
+    raw = b"".join([c async for c in response.body_iterator])
+    try:
+        raw = _j.dumps(_to_en(_j.loads(raw)), ensure_ascii=False).encode()
+    except Exception:
+        pass
+    headers = {k: v for k, v in response.headers.items() if k.lower() != "content-length"}
+    return _R(content=raw, status_code=response.status_code, headers=headers, media_type="application/json")
+
+
 # --- Depuración en vivo: qué entra y qué sale (últimas 50 llamadas, en Valkey) ---
 import json as _json
 import time as _time
@@ -60,8 +105,8 @@ async def debug_log(request: Request, call_next):
         r().ltrim("debug:log", 0, 49)
     except Exception:
         pass
-    return Response(content=raw, status_code=response.status_code, headers=dict(response.headers),
-                    media_type=response.media_type)
+    headers = {k: v for k, v in response.headers.items() if k.lower() != "content-length"}
+    return Response(content=raw, status_code=response.status_code, headers=headers, media_type=response.media_type)
 
 
 @app.get("/debug/log")

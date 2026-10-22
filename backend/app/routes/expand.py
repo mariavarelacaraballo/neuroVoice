@@ -12,8 +12,7 @@ router = APIRouter()
 @router.post("/expand")
 def expand(body: ExpandIn):
     if config.MOCK:
-        return {"candidates": ["Me duele la espalda", "Me duele la espalda, llama a la enfermera",
-                               "Me duele la espalda otra vez", "Me duele la espalda desde ayer", "Me duele la espalda mucho"],
+        return {"candidates": ["My back hurts", "My back hurts, call the nurse", "My back hurts again", "My back hurts since yesterday", "My back hurts a lot"],
                 "suggested_tone": "molesto", "trace": [], "latency_ms": 0, "cost_eur": 0.0}
     from ..agent.agent import expand as agent_expand
     from ..db import clickhouse, postgres, valkey

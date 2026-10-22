@@ -143,7 +143,7 @@ def expand(user_id: str, mode: str, user_input, context: dict, state: dict, prof
         cands = list(dict.fromkeys(m["phrase"] if isinstance(m, dict) else str(m) for m in mem))[:5]
     except Exception:
         cands = []
-    return final({"candidates": cands, "suggested_tone": "neutro"}, why="respaldo desde memoria · " + raw_debug)
+    return final({"candidates": cands, "suggested_tone": "neutro"}, why="fallback from memory (respaldo) · " + raw_debug)
 
     return {"candidates": [], "suggested_tone": "neutro", "trace": trace,
             "latency_ms": int((time.perf_counter() - t0) * 1000), "cost_eur": round(cost * 0.92, 5)}

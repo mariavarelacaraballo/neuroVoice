@@ -10,7 +10,7 @@ router = APIRouter()
 @router.post("/choice")
 def choice(body: ChoiceIn):
     if config.MOCK:
-        return {"ok": True, "learned": "(mock) guardada en memoria"}
+        return {"ok": True, "learned": "(mock) saved to memory"}
     from ..agent.memory import learn_from_choice
     from ..db import valkey
 
@@ -25,4 +25,4 @@ def choice(body: ChoiceIn):
         postgres.save_choice(body.model_dump())
     except Exception:
         pass
-    return {"ok": True, "learned": f"Frase {result} en memoria (con {session.get('interlocutor', 'contexto actual')})"}
+    return {"ok": True, "learned": f"Sentence {'reinforced' if result == 'reforzada' else 'saved'} in memory"}

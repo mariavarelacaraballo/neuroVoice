@@ -17,6 +17,7 @@ TONE_TAGS = {
     "cansado": "[tired]",
     "molesto": "[annoyed]",
     "urgente": "[urgent]",
+    "neutral": "", "calm": "[calm]", "happy": "[cheerful]", "tired": "[tired]", "annoyed": "[annoyed]", "urgent": "[urgent]",
 }
 
 _el = None

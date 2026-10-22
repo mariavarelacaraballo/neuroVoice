@@ -87,4 +87,4 @@ def run_tool(name: str, args: dict, ctx: dict) -> str:
     if name == "web_search":
         from ..services.websearch import search
         return json.dumps(search(args["query"]), ensure_ascii=False)
-    return json.dumps({"error": f"herramienta desconocida {name}"})
+    return json.dumps({"error": f"unknown tool {name}"})

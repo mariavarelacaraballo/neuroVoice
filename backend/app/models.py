@@ -3,7 +3,8 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-Tone = Literal["neutro", "tranquilo", "contento", "cansado", "molesto", "urgente"]
+Tone = Literal["neutro", "tranquilo", "contento", "cansado", "molesto", "urgente",
+               "neutral", "calm", "happy", "tired", "annoyed", "urgent"]  # acepta inglés y español
 
 
 class Context(BaseModel):
