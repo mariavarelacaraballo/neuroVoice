@@ -4,6 +4,8 @@
 
 Built in one day at the **Accel AI Innovate Hackathon** (Paris, October 2026) by María Varela, Pedro and Marc.
 
+**▶ Live demo: [neurovoice.lovable.app](https://neurovoice.lovable.app)**
+
 > People with ALS who communicate with their eyes manage under 10 words per minute. Saying *"my back hurts"* can take 40 glances, and the synthetic voice that reads it out sounds like no one in particular.
 
 ## How it works
