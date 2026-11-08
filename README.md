@@ -1,4 +1,4 @@
-# NeuroVoice
+# NeuraVoice
 
 **An AAC agent with memory: a person with ALS types four letters, and NeuroVoice proposes the full sentence they mean — then speaks it in their own voice.**
 
